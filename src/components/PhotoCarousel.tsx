@@ -14,6 +14,18 @@ interface PhotoCarouselProps {
 const PhotoCarousel = memo(({ photos }: PhotoCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
+  const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set());
+
+  // Preload images for smooth transitions
+  useEffect(() => {
+    photos.forEach((photo, index) => {
+      const img = new Image();
+      img.onload = () => {
+        setImagesLoaded(prev => new Set(prev).add(index));
+      };
+      img.src = photo.src;
+    });
+  }, [photos]);
 
   useEffect(() => {
     if (!isAutoPlay) return;
@@ -43,7 +55,7 @@ const PhotoCarousel = memo(({ photos }: PhotoCarouselProps) => {
         <img
           src={photos[currentIndex].src}
           alt={photos[currentIndex].caption}
-          className="w-full h-full object-cover transition-all duration-700 ease-in-out"
+          className="w-full h-full object-cover transition-all duration-300 ease-out"
           loading="lazy"
           decoding="async"
         />
@@ -52,7 +64,7 @@ const PhotoCarousel = memo(({ photos }: PhotoCarouselProps) => {
         <Button
           variant="secondary"
           size="icon"
-          className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm shadow-soft hover:scale-110 transition-bounce"
+          className="absolute left-4 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm shadow-soft hover:scale-110 transition-all duration-200"
           onClick={prevPhoto}
         >
           <ChevronLeft className="h-5 w-5" />
@@ -61,7 +73,7 @@ const PhotoCarousel = memo(({ photos }: PhotoCarouselProps) => {
         <Button
           variant="secondary"
           size="icon"
-          className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm shadow-soft hover:scale-110 transition-bounce"
+          className="absolute right-4 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm shadow-soft hover:scale-110 transition-all duration-200"
           onClick={nextPhoto}
         >
           <ChevronRight className="h-5 w-5" />
