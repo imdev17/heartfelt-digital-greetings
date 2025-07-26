@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -11,7 +11,7 @@ interface PhotoCarouselProps {
   photos: Photo[];
 }
 
-const PhotoCarousel = memo(({ photos }: PhotoCarouselProps) => {
+const PhotoCarousel = ({ photos }: PhotoCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
   const [imagesLoaded, setImagesLoaded] = useState<Set<number>>(new Set());
@@ -105,8 +105,6 @@ const PhotoCarousel = memo(({ photos }: PhotoCarouselProps) => {
       </div>
     </div>
   );
-});
-
-PhotoCarousel.displayName = "PhotoCarousel";
+};
 
 export default PhotoCarousel;
