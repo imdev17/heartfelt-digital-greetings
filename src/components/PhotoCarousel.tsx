@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -11,7 +11,7 @@ interface PhotoCarouselProps {
   photos: Photo[];
 }
 
-const PhotoCarousel = ({ photos }: PhotoCarouselProps) => {
+const PhotoCarousel = memo(({ photos }: PhotoCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
 
@@ -44,6 +44,8 @@ const PhotoCarousel = ({ photos }: PhotoCarouselProps) => {
           src={photos[currentIndex].src}
           alt={photos[currentIndex].caption}
           className="w-full h-full object-cover transition-all duration-700 ease-in-out"
+          loading="lazy"
+          decoding="async"
         />
         
         {/* Navigation buttons */}
@@ -91,6 +93,8 @@ const PhotoCarousel = ({ photos }: PhotoCarouselProps) => {
       </div>
     </div>
   );
-};
+});
+
+PhotoCarousel.displayName = "PhotoCarousel";
 
 export default PhotoCarousel;

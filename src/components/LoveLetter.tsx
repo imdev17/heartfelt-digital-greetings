@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { Heart, Mail, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import TypingText from "./TypingText";
@@ -8,7 +8,7 @@ interface LoveLetterProps {
   signature: string;
 }
 
-const LoveLetter = ({ letter, signature }: LoveLetterProps) => {
+const LoveLetter = memo(({ letter, signature }: LoveLetterProps) => {
   const [isRevealed, setIsRevealed] = useState(false);
   const [showTyping, setShowTyping] = useState(false);
 
@@ -86,6 +86,8 @@ const LoveLetter = ({ letter, signature }: LoveLetterProps) => {
       )}
     </div>
   );
-};
+});
+
+LoveLetter.displayName = "LoveLetter";
 
 export default LoveLetter;

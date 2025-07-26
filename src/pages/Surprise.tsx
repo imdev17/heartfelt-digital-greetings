@@ -3,6 +3,7 @@ import PhotoCarousel from "@/components/PhotoCarousel";
 import LoveLetter from "@/components/LoveLetter";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 
 // Import generated images
 import coupleImage from "@/assets/couple-sunset.jpg";
@@ -11,6 +12,9 @@ import picnicImage from "@/assets/picnic-memory.jpg";
 
 const Surprise = () => {
   const navigate = useNavigate();
+  const { ref: photosRef, hasIntersected: photosVisible } = useIntersectionObserver();
+  const { ref: letterRef, hasIntersected: letterVisible } = useIntersectionObserver();
+  const { ref: finalRef, hasIntersected: finalVisible } = useIntersectionObserver();
 
   // Sample photos for the carousel
   const photos = [
@@ -59,7 +63,12 @@ Here's to another year of adventures, laughter, love, and countless beautiful me
         </div>
 
         {/* Photo Memories Section */}
-        <section className="animate-slide-up">
+        <section 
+          ref={photosRef}
+          className={`transition-all duration-700 ${
+            photosVisible ? 'animate-slide-up opacity-100' : 'opacity-0 translate-y-10'
+          }`}
+        >
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-script text-primary mb-4">
               Our Beautiful Memories
@@ -68,16 +77,26 @@ Here's to another year of adventures, laughter, love, and countless beautiful me
               Some of my favorite moments with you 📸
             </p>
           </div>
-          <PhotoCarousel photos={photos} />
+          {photosVisible && <PhotoCarousel photos={photos} />}
         </section>
 
         {/* Love Letter Section */}
-        <section className="animate-slide-up" style={{ animationDelay: '0.5s' }}>
-          <LoveLetter letter={loveLetterText} signature={signature} />
+        <section 
+          ref={letterRef}
+          className={`transition-all duration-700 delay-300 ${
+            letterVisible ? 'animate-slide-up opacity-100' : 'opacity-0 translate-y-10'
+          }`}
+        >
+          {letterVisible && <LoveLetter letter={loveLetterText} signature={signature} />}
         </section>
 
         {/* Final Message */}
-        <section className="text-center max-w-3xl mx-auto animate-slide-up" style={{ animationDelay: '1s' }}>
+        <section 
+          ref={finalRef}
+          className={`text-center max-w-3xl mx-auto transition-all duration-700 delay-500 ${
+            finalVisible ? 'animate-slide-up opacity-100' : 'opacity-0 translate-y-10'
+          }`}
+        >
           <div className="bg-gradient-heart p-12 rounded-3xl shadow-romantic">
             <Heart className="w-16 h-16 text-primary-foreground mx-auto mb-6 animate-heartbeat" fill="currentColor" />
             <h2 className="text-4xl font-script text-primary-foreground mb-6">
