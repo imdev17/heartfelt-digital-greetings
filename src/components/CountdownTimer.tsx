@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Calendar, Clock, Heart } from "lucide-react";
 
 interface CountdownTimerProps {
-  targetDate: Date;
   title: string;
   onComplete?: () => void;
 }
@@ -14,7 +13,8 @@ interface TimeLeft {
   seconds: number;
 }
 
-const CountdownTimer = ({ targetDate, title, onComplete }: CountdownTimerProps) => {
+const CountdownTimer = ({ title, onComplete }: CountdownTimerProps) => {
+  const targetDate = new Date("2025-07-06T00:00:00");
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [isComplete, setIsComplete] = useState(false);
 
@@ -42,7 +42,7 @@ const CountdownTimer = ({ targetDate, title, onComplete }: CountdownTimerProps) 
     const timer = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(timer);
-  }, [targetDate, isComplete, onComplete]);
+  }, [isComplete, onComplete]);
 
   if (isComplete) {
     return (
